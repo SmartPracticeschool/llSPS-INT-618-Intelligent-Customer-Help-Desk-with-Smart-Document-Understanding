@@ -1,0 +1,201 @@
+[
+    {
+        "id": "c120f181.1ff3c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "f2f2649a.0d0d98",
+        "type": "debug",
+        "z": "c120f181.1ff3c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 810,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "eca6e59c.51cd78",
+        "type": "ui_form",
+        "z": "c120f181.1ff3c",
+        "name": "",
+        "label": "",
+        "group": "82f39a33.302ca8",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Enter your Query here:",
+                "value": "query",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "query": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 90,
+        "y": 260,
+        "wires": [
+            [
+                "cc218b6e.3c34c8"
+            ]
+        ]
+    },
+    {
+        "id": "cc218b6e.3c34c8",
+        "type": "function",
+        "z": "c120f181.1ff3c",
+        "name": "",
+        "func": "msg.payload=msg.payload.query  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 260,
+        "wires": [
+            [
+                "34fff1f9.6c399e",
+                "e56ddc5a.838fe"
+            ]
+        ]
+    },
+    {
+        "id": "34fff1f9.6c399e",
+        "type": "ui_text",
+        "z": "c120f181.1ff3c",
+        "group": "82f39a33.302ca8",
+        "order": 4,
+        "width": 10,
+        "height": 1,
+        "name": "",
+        "label": "Query:",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 430,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e56ddc5a.838fe",
+        "type": "watson-conversation-v1",
+        "z": "c120f181.1ff3c",
+        "name": "",
+        "workspaceid": "7586bd93-5335-40b9-a473-e1feb8c0b025",
+        "multiuser": false,
+        "context": false,
+        "empty-payload": false,
+        "service-endpoint": "https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/e8205b92-de69-4e2f-b32c-e84a37bbd1ca",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 480,
+        "y": 260,
+        "wires": [
+            [
+                "5fbab25b.37990c"
+            ]
+        ]
+    },
+    {
+        "id": "5fbab25b.37990c",
+        "type": "function",
+        "z": "c120f181.1ff3c",
+        "name": "",
+        "func": "msg.payload.text=\"\"; \nif(msg.payload.context.webhook_result_1)\n{ \n    for(var i in msg.payload.context.webhook_result_1.results)\n    { \n        msg.payload.text=msg.payload.text+\"<br>\"+msg.payload.context.webhook_result_1.results[i].subtitle;\n        msg.payload.text=msg.payload.text+\"<br><br>\"+msg.payload.context.webhook_result_1.results[i].text+\"<br>\"; \n    } \n    msg.payload=msg.payload.text; \n    \n} \nelse \nmsg.payload = msg.payload.output.text[0];\nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 650,
+        "y": 260,
+        "wires": [
+            [
+                "f2f2649a.0d0d98",
+                "4c937bfb.2669e4"
+            ]
+        ]
+    },
+    {
+        "id": "4c937bfb.2669e4",
+        "type": "ui_text",
+        "z": "c120f181.1ff3c",
+        "group": "9f72083c.6d66b8",
+        "order": 1,
+        "width": 17,
+        "height": 11,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 850,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "3248fce1.e17be4",
+        "type": "ui_button",
+        "z": "c120f181.1ff3c",
+        "name": "",
+        "group": "82f39a33.302ca8",
+        "order": 6,
+        "width": 10,
+        "height": 1,
+        "passthru": false,
+        "label": "CLEAR",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "Please Enter a Query",
+        "payloadType": "str",
+        "topic": "",
+        "x": 740,
+        "y": 340,
+        "wires": [
+            [
+                "4c937bfb.2669e4"
+            ]
+        ]
+    },
+    {
+        "id": "82f39a33.302ca8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Ask a Question about your ecobee3",
+        "tab": "7948243d.e1fe5c",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "9f72083c.6d66b8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Here is what I found",
+        "tab": "7948243d.e1fe5c",
+        "order": 3,
+        "disp": true,
+        "width": 17,
+        "collapse": false
+    },
+    {
+        "id": "7948243d.e1fe5c",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Intelligent Customer Help Desk for ecobee3",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
